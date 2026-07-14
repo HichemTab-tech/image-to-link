@@ -152,8 +152,12 @@ export function Uploader({maxUploadMb}: { maxUploadMb: number }) {
 
     return (
         <div className="w-full max-w-xl">
+            <label htmlFor="image-input" className="sr-only">
+                Choose an image to upload
+            </label>
             <input
                 ref={inputRef}
+                id="image-input"
                 type="file"
                 accept="image/*"
                 className="sr-only"
