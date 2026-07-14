@@ -106,7 +106,7 @@
 /* --- Print-shop primitives ---------------------------------------------- */
 
 .font-serif {
-  font-family: var(--font-serif);
+  font-family: var(--font-serif), Georgia, serif;
 }
 
 /* Hard letterpress shadow card. */
@@ -180,7 +180,7 @@
 
 /* Rubber stamp. */
 .rubber-stamp {
-  font-family: var(--font-mono);
+  font-family: var(--font-mono), monospace;
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
