@@ -7,7 +7,21 @@ from disk by a background sweeper.
 Built with [TanStack Start](https://tanstack.com/start), React 19,
 Tailwind CSS v4 and shadcn-style components.
 
-Made by [HichemTab-tech](https://hichemtab-tech.me).
+Made by [HichemTab-tech](https://github.com/HichemTab-tech).
+
+## Why?
+
+Sometimes you just need an image to *be a URL* for a few minutes:
+
+- **Feeding a screenshot to a CLI AI agent** (Claude Code, etc.) — instead of
+  saving a file, finding its path, and worrying about what the agent can
+  access, paste the screenshot here and hand the agent a plain URL it can
+  fetch.
+- **Testing** anything that consumes an image URL — og:image tags, webhooks,
+  Markdown previews — with a real, temporary link.
+
+No account, no gallery, no cleanup to remember: the link dies on its own and
+the file is deleted.
 
 ## Features
 
