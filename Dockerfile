@@ -15,7 +15,7 @@ FROM node:24-alpine AS runtime
 WORKDIR /app
 
 ENV NODE_ENV=production \
-    PORT=3000 \
+    PORT=3131 \
     UPLOAD_DIR=/data/uploads
 
 COPY --from=build /app/.output ./.output
@@ -23,5 +23,5 @@ COPY --from=build /app/.output ./.output
 RUN mkdir -p /data/uploads && chown -R node:node /data /app
 USER node
 
-EXPOSE 3000
+EXPOSE 3131
 CMD ["node", ".output/server/index.mjs"]

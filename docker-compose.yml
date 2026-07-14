@@ -1,8 +1,6 @@
 services:
   app:
     build: .
-    ports:
-      - '${PORT:-3000}:3000'
     environment:
       # How long a generated link stays alive, in seconds.
       LINK_TTL_SECONDS: ${LINK_TTL_SECONDS:-300}

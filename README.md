@@ -39,7 +39,7 @@ the file is deleted.
 
 ```bash
 pnpm install
-pnpm dev        # http://localhost:3000
+pnpm dev        # http://localhost:3131
 ```
 
 ## Production (Docker)
@@ -56,7 +56,7 @@ container).
 
 | Variable                   | Default                        | Description                                          |
 |----------------------------|--------------------------------|------------------------------------------------------|
-| `PORT`                     | `3000`                         | Host port published by docker compose                |
+| `PORT`                     | `3131`                         | Host port published by docker compose                |
 | `LINK_TTL_SECONDS`         | `300`                          | How long a link stays alive                          |
 | `MAX_UPLOAD_MB`            | `10`                           | Maximum accepted image size                          |
 | `MAX_STORAGE_MB`           | `500`                          | Total storage budget; uploads are rejected when full |
