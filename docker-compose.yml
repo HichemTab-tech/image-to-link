@@ -1,0 +1,20 @@
+services:
+  app:
+    build: .
+    ports:
+      - '${PORT:-3000}:3000'
+    environment:
+      # How long a generated link stays alive, in seconds.
+      LINK_TTL_SECONDS: ${LINK_TTL_SECONDS:-300}
+      # Maximum accepted image size, in megabytes.
+      MAX_UPLOAD_MB: ${MAX_UPLOAD_MB:-10}
+      # How often the expired-image sweeper runs, in seconds.
+      CLEANUP_INTERVAL_SECONDS: ${CLEANUP_INTERVAL_SECONDS:-30}
+      # Public origin used when building links (needed behind a reverse proxy).
+      PUBLIC_BASE_URL: ${PUBLIC_BASE_URL:-}
+    volumes:
+      - uploads:/data/uploads
+    restart: unless-stopped
+
+volumes:
+  uploads:
