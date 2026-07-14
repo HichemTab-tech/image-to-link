@@ -8,6 +8,9 @@ services:
       LINK_TTL_SECONDS: ${LINK_TTL_SECONDS:-300}
       # Maximum accepted image size, in megabytes.
       MAX_UPLOAD_MB: ${MAX_UPLOAD_MB:-10}
+      # Total storage budget for uploads, in megabytes. When full, uploads
+      # are rejected until expired images free up space.
+      MAX_STORAGE_MB: ${MAX_STORAGE_MB:-500}
       # How often the expired-image sweeper runs, in seconds.
       CLEANUP_INTERVAL_SECONDS: ${CLEANUP_INTERVAL_SECONDS:-30}
       # Public origin used when building links (needed behind a reverse proxy).

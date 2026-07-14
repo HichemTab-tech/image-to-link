@@ -1,12 +1,20 @@
 import { createFileRoute } from '@tanstack/react-router'
 import {
+  MAX_STORAGE_MB,
   MAX_UPLOAD_MB,
   TTL_SECONDS,
   isSupportedImageType,
   saveImage,
   supportedMimeTypes,
   sweepExpired,
+  usedStorageBytes,
 } from '#/lib/server/storage'
+
+function ttlLabel(): string {
+  return TTL_SECONDS < 60
+    ? `${TTL_SECONDS} seconds`
+    : `${Math.round(TTL_SECONDS / 60)} minutes`
+}
 
 function jsonError(status: number, message: string) {
   return Response.json({ error: message }, { status })
@@ -53,10 +61,28 @@ export const Route = createFileRoute('/api/upload')({
           )
         }
 
-        // Opportunistic cleanup alongside the interval sweeper.
-        sweepExpired().catch(() => {})
+        // Opportunistic cleanup alongside the interval sweeper — do it
+        // before the capacity check so expired files free their space.
+        await sweepExpired().catch(() => {})
 
-        const { fileId, expiresAt } = await saveImage(file)
+        const used = await usedStorageBytes()
+        if (used + file.size > MAX_STORAGE_MB * 1024 * 1024) {
+          return jsonError(
+            507,
+            `We're at full capacity right now — every link expires after ${ttlLabel()}, so space frees itself. Try again in a few minutes.`,
+          )
+        }
+
+        let saved
+        try {
+          saved = await saveImage(file)
+        } catch {
+          return jsonError(
+            415,
+            'File content does not match its declared image type.',
+          )
+        }
+        const { fileId, expiresAt } = saved
         return Response.json({
           url: `${publicOrigin(request)}/i/${fileId}`,
           fileId,

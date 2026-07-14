@@ -174,7 +174,7 @@ export function Uploader({ maxUploadMb }: { maxUploadMb: number }) {
 
       {dragging && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-paper/85 backdrop-blur-[2px] animate-in fade-in duration-150">
-          <div className="plate flex rotate-[-1deg] flex-col items-center gap-4 px-16 py-12">
+          <div className="plate flex -rotate-1 flex-col items-center gap-4 px-16 py-12">
             <ImageUp className="size-12 text-stamp animate-bounce" />
             <p className="label-caps text-ink">Drop it anywhere</p>
           </div>
@@ -299,6 +299,7 @@ function ResultCard({
   const remaining = useCountdown(result.expiresAt)
   const expired = remaining <= 0
   const fraction = Math.min(1, remaining / (result.ttlSeconds * 1000))
+  const [starPop, setStarPop] = React.useState(0)
 
   return (
     <div className="space-y-5">
@@ -339,7 +340,7 @@ function ResultCard({
           <CountdownRing fraction={expired ? 0 : fraction} label={formatShort(remaining)} />
         </div>
 
-        <div className="tear-line p-5">
+        <div className="tear-line space-y-4 p-5">
           <div
             className={cn(
               'flex items-center gap-2 rounded-lg border-2 border-ink bg-paper p-1.5 pl-4 transition-opacity',
@@ -350,37 +351,57 @@ function ResultCard({
             <span className="min-w-0 flex-1 truncate text-sm" title={result.url}>
               {result.url}
             </span>
-            <CopyButton value={result.url} disabled={expired} />
+            <CopyButton
+              value={result.url}
+              disabled={expired}
+              onCopied={() => setStarPop((n) => n + 1)}
+            />
+          </div>
+          <div className="flex justify-center pb-1">
+            <div key={starPop} className={cn('star-nudge', starPop > 0 && 'star-pop')}>
+              <StarButton />
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+      <div className="flex justify-center">
         <Button variant="secondary" onClick={onReset}>
           <RotateCcw /> {expired ? 'Upload another' : 'New upload'}
         </Button>
-        <StarButton />
       </div>
     </div>
   )
 }
 
-function CopyButton({ value, disabled }: { value: string; disabled?: boolean }) {
+function CopyButton({
+  value,
+  disabled,
+  onCopied,
+}: {
+  value: string
+  disabled?: boolean
+  onCopied?: () => void
+}) {
   const [copied, setCopied] = React.useState(false)
   const timeoutRef = React.useRef<ReturnType<typeof setTimeout>>(undefined)
 
   const copy = async () => {
+    // @ts-ignore
     try {
       await navigator.clipboard.writeText(value)
     } catch {
+      // Deprecated, but the only programmatic-copy fallback when the
+      // Clipboard API is unavailable (insecure context).
       const textarea = document.createElement('textarea')
       textarea.value = value
       document.body.appendChild(textarea)
-      textarea.select()
-      document.execCommand('copy')
+      textarea.select();
+      (document as Record<any, any>).execCommand('copy')
       textarea.remove()
     }
     setCopied(true)
+    onCopied?.()
     clearTimeout(timeoutRef.current)
     timeoutRef.current = setTimeout(() => setCopied(false), 1800)
   }

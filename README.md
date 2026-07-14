@@ -43,6 +43,7 @@ container).
 | `PORT`                     | `3000`      | Host port published by docker compose                |
 | `LINK_TTL_SECONDS`         | `300`       | How long a link stays alive                          |
 | `MAX_UPLOAD_MB`            | `10`        | Maximum accepted image size                          |
+| `MAX_STORAGE_MB`           | `500`       | Total storage budget; uploads are rejected when full |
 | `CLEANUP_INTERVAL_SECONDS` | `30`        | How often the expired-image sweeper runs             |
 | `UPLOAD_DIR`               | `./uploads` | Where images are stored on disk                      |
 | `PUBLIC_BASE_URL`          | _(empty)_   | Public origin for generated links (behind a proxy)   |

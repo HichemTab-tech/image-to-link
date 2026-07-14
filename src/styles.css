@@ -281,9 +281,36 @@
   65% { transform: rotate(14deg) scale(1.15); }
 }
 
+/* Periodic nudge so the sticker catches the eye without nagging. */
+.star-nudge {
+  animation: star-nudge 6s ease-in-out 2s infinite;
+}
+
+@keyframes star-nudge {
+  0%, 86%, 100% { transform: rotate(0deg) scale(1); }
+  89% { transform: rotate(-2.5deg) scale(1.04); }
+  93% { transform: rotate(2deg) scale(1.04); }
+  97% { transform: rotate(-1deg) scale(1.01); }
+}
+
+/* Celebratory pop right after the user copies their link. */
+.star-pop {
+  animation:
+    star-pop 500ms cubic-bezier(0.16, 1.4, 0.4, 1),
+    star-nudge 6s ease-in-out 2s infinite;
+}
+
+@keyframes star-pop {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.18) rotate(3deg); }
+  100% { transform: scale(1); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .stripe-fill,
   .star-sticker:hover .star-icon,
+  .star-nudge,
+  .star-pop,
   .stamp-in,
   .print-out {
     animation: none !important;

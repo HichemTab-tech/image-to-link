@@ -12,6 +12,10 @@ export const MAX_UPLOAD_MB = Math.max(
   1,
   Number(process.env.MAX_UPLOAD_MB ?? 10),
 )
+export const MAX_STORAGE_MB = Math.max(
+  1,
+  Number(process.env.MAX_STORAGE_MB ?? 500),
+)
 const CLEANUP_INTERVAL_SECONDS = Math.max(
   5,
   Number(process.env.CLEANUP_INTERVAL_SECONDS ?? 30),
@@ -45,15 +49,69 @@ async function ensureUploadDir() {
   await mkdir(UPLOAD_DIR, { recursive: true })
 }
 
+// Magic-byte check: the file content must match its declared MIME type,
+// so a script can't be smuggled in under an image content type.
+function matchesDeclaredType(bytes: Buffer, mime: string): boolean {
+  switch (mime) {
+    case 'image/png':
+      return bytes.subarray(0, 8).equals(
+        Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
+      )
+    case 'image/jpeg':
+      return bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff
+    case 'image/gif':
+      return bytes.subarray(0, 4).toString('latin1') === 'GIF8'
+    case 'image/webp':
+      return (
+        bytes.subarray(0, 4).toString('latin1') === 'RIFF' &&
+        bytes.subarray(8, 12).toString('latin1') === 'WEBP'
+      )
+    case 'image/avif': {
+      const brand = bytes.subarray(4, 12).toString('latin1')
+      return brand.startsWith('ftyp')
+    }
+    case 'image/svg+xml': {
+      const head = bytes.subarray(0, 1024).toString('utf8').trimStart()
+      return head.startsWith('<')
+    }
+    default:
+      return false
+  }
+}
+
+export async function usedStorageBytes(): Promise<number> {
+  let entries: Array<string>
+  try {
+    entries = await readdir(UPLOAD_DIR)
+  } catch {
+    return 0
+  }
+  const sizes = await Promise.all(
+    entries.map(async (name) => {
+      if (!FILE_ID_PATTERN.test(name)) return 0
+      try {
+        return (await stat(path.join(UPLOAD_DIR, name))).size
+      } catch {
+        return 0
+      }
+    }),
+  )
+  return sizes.reduce((sum, size) => sum + size, 0)
+}
+
 export async function saveImage(
   file: File,
 ): Promise<{ fileId: string; expiresAt: number }> {
   const ext = EXTENSION_BY_MIME[file.type]
   if (!ext) throw new Error(`Unsupported image type: ${file.type}`)
 
+  const bytes = Buffer.from(await file.arrayBuffer())
+  if (!matchesDeclaredType(bytes, file.type)) {
+    throw new Error('File content does not match its declared image type.')
+  }
+
   await ensureUploadDir()
   const fileId = `${randomBytes(9).toString('base64url')}.${ext}`
-  const bytes = Buffer.from(await file.arrayBuffer())
   await writeFile(path.join(UPLOAD_DIR, fileId), bytes)
   return { fileId, expiresAt: Date.now() + TTL_SECONDS * 1000 }
 }
