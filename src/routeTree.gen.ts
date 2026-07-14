@@ -9,10 +9,16 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as OgRouteImport } from './routes/og'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as IFileRouteImport } from './routes/i/$file'
 import { Route as ApiUploadRouteImport } from './routes/api/upload'
 
+const OgRoute = OgRouteImport.update({
+  id: '/og',
+  path: '/og',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -31,36 +37,47 @@ const ApiUploadRoute = ApiUploadRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/og': typeof OgRoute
   '/api/upload': typeof ApiUploadRoute
   '/i/$file': typeof IFileRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/og': typeof OgRoute
   '/api/upload': typeof ApiUploadRoute
   '/i/$file': typeof IFileRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/og': typeof OgRoute
   '/api/upload': typeof ApiUploadRoute
   '/i/$file': typeof IFileRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/upload' | '/i/$file'
+  fullPaths: '/' | '/og' | '/api/upload' | '/i/$file'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/upload' | '/i/$file'
-  id: '__root__' | '/' | '/api/upload' | '/i/$file'
+  to: '/' | '/og' | '/api/upload' | '/i/$file'
+  id: '__root__' | '/' | '/og' | '/api/upload' | '/i/$file'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  OgRoute: typeof OgRoute
   ApiUploadRoute: typeof ApiUploadRoute
   IFileRoute: typeof IFileRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/og': {
+      id: '/og'
+      path: '/og'
+      fullPath: '/og'
+      preLoaderRoute: typeof OgRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -87,6 +104,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  OgRoute: OgRoute,
   ApiUploadRoute: ApiUploadRoute,
   IFileRoute: IFileRoute,
 }

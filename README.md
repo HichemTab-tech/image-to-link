@@ -1,5 +1,7 @@
 # image→link
 
+![image-to-link banner](public/meta.png)
+
 Drop, paste or upload an image — get a shareable link instantly. Links
 self-destruct after a few minutes (5 by default) and the image is deleted
 from disk by a background sweeper.
