@@ -15,7 +15,7 @@ export const Route = createRootRoute({
         content:
           'Drop, paste or upload an image and get a shareable link that self-destructs after a few minutes.',
       },
-      { name: 'theme-color', content: '#0b0e17' },
+      { name: 'theme-color', content: '#f2e9d8' },
     ],
     links: [
       { rel: 'stylesheet', href: appCss },
@@ -27,7 +27,7 @@ export const Route = createRootRoute({
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en">
       <head>
         <HeadContent />
       </head>

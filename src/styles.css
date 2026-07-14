@@ -1,38 +1,45 @@
-@import '@fontsource-variable/inter';
+@import '@fontsource-variable/fraunces';
+@import '@fontsource/ibm-plex-mono/400.css';
+@import '@fontsource/ibm-plex-mono/500.css';
+@import '@fontsource/ibm-plex-mono/700.css';
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
-@custom-variant dark (&:is(.dark *));
+:root {
+  --paper: #f2e9d8;
+  --paper-bright: #fdf8ec;
+  --ink: #26211a;
+  --ink-soft: #756b58;
+  --stamp: #d6482f;
+  --stamp-deep: #b53722;
+  --seal: #1f6f66;
+  --line: rgba(38, 33, 26, 0.22);
 
-:root,
-.dark {
-  --background: oklch(0.16 0.02 275);
-  --foreground: oklch(0.95 0.01 275);
-  --card: oklch(0.21 0.025 275);
-  --card-foreground: oklch(0.95 0.01 275);
-  --popover: oklch(0.21 0.025 275);
-  --popover-foreground: oklch(0.95 0.01 275);
-  --primary: oklch(0.65 0.21 285);
-  --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.27 0.025 275);
-  --secondary-foreground: oklch(0.92 0.01 275);
-  --muted: oklch(0.27 0.025 275);
-  --muted-foreground: oklch(0.68 0.02 275);
-  --accent: oklch(0.27 0.025 275);
-  --accent-foreground: oklch(0.95 0.01 275);
-  --destructive: oklch(0.65 0.2 22);
-  --border: oklch(0.32 0.025 275);
-  --input: oklch(0.32 0.025 275);
-  --ring: oklch(0.65 0.21 285);
-  --radius: 0.75rem;
-
-  --accent-2: oklch(0.7 0.19 330);
-  --glow: oklch(0.55 0.21 290 / 0.55);
-  --glow-soft: oklch(0.6 0.18 295 / 0.14);
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --card: var(--paper-bright);
+  --card-foreground: var(--ink);
+  --popover: var(--paper-bright);
+  --popover-foreground: var(--ink);
+  --primary: var(--ink);
+  --primary-foreground: var(--paper-bright);
+  --secondary: #ece1cb;
+  --secondary-foreground: var(--ink);
+  --muted: #ece1cb;
+  --muted-foreground: var(--ink-soft);
+  --accent: var(--stamp);
+  --accent-foreground: var(--paper-bright);
+  --destructive: var(--stamp);
+  --border: var(--line);
+  --input: var(--line);
+  --ring: var(--ink);
+  --radius: 0.5rem;
 }
 
 @theme inline {
-  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'IBM Plex Mono', ui-monospace, monospace;
+  --font-serif: 'Fraunces Variable', Georgia, serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -51,6 +58,13 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-stamp: var(--stamp);
+  --color-stamp-deep: var(--stamp-deep);
+  --color-seal: var(--seal);
+  --color-paper: var(--paper);
+  --color-paper-bright: var(--paper-bright);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -59,11 +73,11 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border outline-ring/60;
   }
 
   html {
-    color-scheme: dark;
+    color-scheme: light;
   }
 
   body {
@@ -71,96 +85,207 @@
     margin: 0;
     min-height: 100dvh;
     overflow-x: hidden;
-    background-image:
-      radial-gradient(900px 480px at 15% -10%, oklch(0.4 0.16 290 / 0.22), transparent 60%),
-      radial-gradient(800px 460px at 90% 0%, oklch(0.45 0.16 330 / 0.14), transparent 55%),
-      radial-gradient(700px 500px at 50% 115%, oklch(0.4 0.14 260 / 0.16), transparent 65%);
-    background-attachment: fixed;
   }
 
-  /* Subtle grain-like grid to give the dark canvas some texture. */
+  /* Paper grain. */
   body::before {
     content: '';
     position: fixed;
     inset: 0;
-    z-index: -1;
+    z-index: 40;
     pointer-events: none;
-    opacity: 0.35;
-    background-image:
-      linear-gradient(oklch(1 0 0 / 0.025) 1px, transparent 1px),
-      linear-gradient(90deg, oklch(1 0 0 / 0.025) 1px, transparent 1px);
-    background-size: 32px 32px;
-    mask-image: radial-gradient(ellipse 80% 60% at 50% 35%, black, transparent);
+    opacity: 0.55;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
   }
 
   ::selection {
-    background: oklch(0.55 0.21 290 / 0.5);
+    background: rgba(214, 72, 47, 0.28);
   }
 }
 
-/* --- GitHub star button ------------------------------------------------ */
+/* --- Print-shop primitives ---------------------------------------------- */
 
-.star-button-shine {
+.font-serif {
+  font-family: var(--font-serif);
+}
+
+/* Hard letterpress shadow card. */
+.plate {
+  background: var(--paper-bright);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-xl);
+  box-shadow: 6px 6px 0 var(--ink);
+}
+
+.label-caps {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* Ticket tear line with side notches. */
+.tear-line {
+  position: relative;
+  border-top: 2px dashed var(--line);
+}
+
+.tear-line::before,
+.tear-line::after {
+  content: '';
   position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    115deg,
-    transparent 30%,
-    oklch(0.9 0.15 90 / 0.16) 48%,
-    oklch(0.9 0.15 90 / 0.28) 50%,
-    oklch(0.9 0.15 90 / 0.16) 52%,
-    transparent 70%
-  );
-  transform: translateX(-110%);
-  animation: star-shine 4.5s ease-in-out infinite;
-}
-
-@keyframes star-shine {
-  0%,
-  72% {
-    transform: translateX(-110%);
-  }
-  88%,
-  100% {
-    transform: translateX(110%);
-  }
-}
-
-.star-sparkle {
-  position: absolute;
-  inset: -6px;
+  top: -11px;
+  width: 20px;
+  height: 20px;
   border-radius: 9999px;
-  opacity: 0;
-  background:
-    radial-gradient(2px 2px at 20% 15%, oklch(0.92 0.16 95), transparent 60%),
-    radial-gradient(1.5px 1.5px at 85% 25%, oklch(0.92 0.16 95), transparent 60%),
-    radial-gradient(1.5px 1.5px at 70% 90%, oklch(0.92 0.16 95), transparent 60%),
-    radial-gradient(2px 2px at 10% 80%, oklch(0.92 0.16 95), transparent 60%);
-  transition: opacity 200ms ease;
+  background: var(--paper);
+  border: 2px solid var(--ink);
 }
 
-.star-button:hover .star-sparkle {
-  opacity: 1;
-  animation: sparkle-pop 700ms ease-out;
+.tear-line::before {
+  left: -13px;
+  clip-path: inset(0 0 0 50%);
 }
 
-@keyframes sparkle-pop {
+.tear-line::after {
+  right: -13px;
+  clip-path: inset(0 50% 0 0);
+}
+
+/* Polaroid-style preview. */
+.polaroid {
+  background: #fff;
+  padding: 6px 6px 6px;
+  border: 1px solid var(--line);
+  box-shadow: 2px 3px 0 rgba(38, 33, 26, 0.35);
+  transform: rotate(-2deg);
+}
+
+.polaroid img {
+  display: block;
+}
+
+/* Piece of tape. */
+.tape {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  width: 44px;
+  height: 14px;
+  transform: translateX(-50%) rotate(-4deg);
+  background: rgba(214, 195, 145, 0.6);
+  border-left: 1px dashed rgba(38, 33, 26, 0.25);
+  border-right: 1px dashed rgba(38, 33, 26, 0.25);
+}
+
+/* Rubber stamp. */
+.rubber-stamp {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--stamp);
+  border: 3px double var(--stamp);
+  border-radius: 6px;
+  padding: 2px 10px;
+  transform: rotate(-11deg);
+  mix-blend-mode: multiply;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='r'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.5' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.9 0.18'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23r)'/%3E%3C/svg%3E");
+}
+
+.stamp-in {
+  animation: stamp-in 320ms cubic-bezier(0.16, 1.4, 0.4, 1) both;
+}
+
+@keyframes stamp-in {
   0% {
-    transform: scale(0.4);
     opacity: 0;
-  }
-  40% {
-    opacity: 1;
+    transform: rotate(-11deg) scale(2.2);
   }
   100% {
-    transform: scale(1.25);
-    opacity: 0.9;
+    opacity: 1;
+    transform: rotate(-11deg) scale(1);
   }
+}
+
+/* Result ticket printing out. */
+.print-out {
+  animation: print-out 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes print-out {
+  0% {
+    opacity: 0;
+    transform: translateY(-14px) rotate(-1.2deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+/* Photo-corner marks on the dropzone. */
+.crop-mark {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--ink);
+  transition: all 200ms ease;
+}
+
+.crop-mark.tl { top: 12px; left: 12px; border-right: 0; border-bottom: 0; }
+.crop-mark.tr { top: 12px; right: 12px; border-left: 0; border-bottom: 0; }
+.crop-mark.bl { bottom: 12px; left: 12px; border-right: 0; border-top: 0; }
+.crop-mark.br { bottom: 12px; right: 12px; border-left: 0; border-top: 0; }
+
+.dropzone:hover .crop-mark.tl { top: 8px; left: 8px; }
+.dropzone:hover .crop-mark.tr { top: 8px; right: 8px; }
+.dropzone:hover .crop-mark.bl { bottom: 8px; left: 8px; }
+.dropzone:hover .crop-mark.br { bottom: 8px; right: 8px; }
+
+/* Diagonal-stripe progress fill, like packing tape. */
+.stripe-fill {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--ink),
+    var(--ink) 6px,
+    var(--stamp) 6px,
+    var(--stamp) 12px
+  );
+  background-size: 200% 100%;
+  animation: stripe-crawl 1.2s linear infinite;
+}
+
+@keyframes stripe-crawl {
+  from { background-position: 0 0; }
+  to { background-position: 17px 0; }
+}
+
+/* Star sticker. */
+.star-sticker {
+  transform: rotate(-2deg);
+  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 200ms ease;
+}
+
+.star-sticker:hover {
+  transform: rotate(1deg) scale(1.04);
+}
+
+.star-sticker:hover .star-icon {
+  animation: star-wiggle 500ms ease-in-out;
+}
+
+@keyframes star-wiggle {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  30% { transform: rotate(-18deg) scale(1.25); }
+  65% { transform: rotate(14deg) scale(1.15); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .star-button-shine,
-  .star-sparkle {
+  .stripe-fill,
+  .star-sticker:hover .star-icon,
+  .stamp-in,
+  .print-out {
     animation: none !important;
   }
 }

@@ -8,7 +8,6 @@ import {
   Link2,
   MousePointerClick,
   RotateCcw,
-  UploadCloud,
 } from 'lucide-react'
 import { Button } from '#/components/ui/button'
 import { StarButton } from '#/components/StarButton'
@@ -174,10 +173,10 @@ export function Uploader({ maxUploadMb }: { maxUploadMb: number }) {
       />
 
       {dragging && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm animate-in fade-in duration-150">
-          <div className="flex flex-col items-center gap-4 rounded-3xl border-2 border-dashed border-primary/70 bg-card/80 px-16 py-12 shadow-2xl">
-            <ImageUp className="size-12 text-primary animate-bounce" />
-            <p className="text-lg font-semibold">Drop it anywhere</p>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-paper/85 backdrop-blur-[2px] animate-in fade-in duration-150">
+          <div className="plate flex rotate-[-1deg] flex-col items-center gap-4 px-16 py-12">
+            <ImageUp className="size-12 text-stamp animate-bounce" />
+            <p className="label-caps text-ink">Drop it anywhere</p>
           </div>
         </div>
       )}
@@ -215,22 +214,23 @@ function Dropzone({
       <button
         type="button"
         onClick={onBrowse}
-        className="group relative w-full cursor-pointer rounded-3xl border-2 border-dashed border-border bg-card/50 px-8 py-14 text-center backdrop-blur transition-all duration-300 hover:border-primary/60 hover:bg-card/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
+        className="dropzone plate relative w-full cursor-pointer px-8 py-14 text-center transition-transform duration-200 hover:rotate-[-0.4deg] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
       >
-        <div className="pointer-events-none absolute inset-0 rounded-3xl opacity-0 transition-opacity duration-300 group-hover:opacity-100 bg-[radial-gradient(420px_180px_at_50%_0%,var(--glow-soft),transparent)]" />
-        <div className="relative flex flex-col items-center gap-5">
-          <div className="grid size-16 place-items-center rounded-2xl bg-gradient-to-br from-primary to-[var(--accent-2)] text-primary-foreground shadow-[0_8px_30px_-6px_var(--glow)] transition-transform duration-300 group-hover:-translate-y-1 group-hover:scale-105">
-            <UploadCloud className="size-8" />
+        <span className="crop-mark tl" aria-hidden />
+        <span className="crop-mark tr" aria-hidden />
+        <span className="crop-mark bl" aria-hidden />
+        <span className="crop-mark br" aria-hidden />
+        <div className="flex flex-col items-center gap-5">
+          <div className="grid size-16 place-items-center rounded-xl border-2 border-ink bg-stamp text-paper-bright shadow-[3px_3px_0_var(--ink)] transition-transform duration-200 group-hover:scale-105">
+            <ImageUp className="size-8" />
           </div>
-          <div className="space-y-1.5">
-            <p className="text-lg font-semibold text-foreground">
-              Drop an image here
-            </p>
+          <div className="space-y-2">
+            <p className="label-caps text-base text-ink">Place image here</p>
             <p className="text-sm text-muted-foreground">
               or click to browse — up to {maxUploadMb} MB
             </p>
           </div>
-          <div className="flex flex-wrap items-center justify-center gap-2 text-xs text-muted-foreground">
+          <div className="flex flex-wrap items-center justify-center gap-2 text-[11px] text-muted-foreground">
             <Hint icon={<MousePointerClick className="size-3.5" />} label="Drag & drop" />
             <Hint icon={<ClipboardPaste className="size-3.5" />} label="Ctrl+V to paste" />
             <Hint icon={<ImageUp className="size-3.5" />} label="PNG · JPG · WebP · GIF" />
@@ -238,7 +238,7 @@ function Dropzone({
         </div>
       </button>
       {error && (
-        <p className="mt-4 flex items-center justify-center gap-2 text-sm font-medium text-destructive animate-in fade-in slide-in-from-top-1 duration-200">
+        <p className="mt-4 flex items-center justify-center gap-2 text-sm font-bold text-stamp animate-in fade-in slide-in-from-top-1 duration-200">
           <AlertTriangle className="size-4" /> {error}
         </p>
       )}
@@ -248,7 +248,7 @@ function Dropzone({
 
 function Hint({ icon, label }: { icon: React.ReactNode; label: string }) {
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full border border-border/70 bg-secondary/40 px-3 py-1">
+    <span className="inline-flex items-center gap-1.5 rounded-full border border-ink/40 bg-paper px-3 py-1">
       {icon} {label}
     </span>
   )
@@ -263,18 +263,21 @@ function UploadingCard({
 }) {
   const percent = Math.round(progress * 100)
   return (
-    <div className="rounded-3xl border border-border bg-card/70 p-6 backdrop-blur animate-in fade-in zoom-in-95 duration-200">
+    <div className="plate p-6 animate-in fade-in zoom-in-95 duration-200">
       <div className="flex items-center gap-5">
-        <img
-          src={previewUrl}
-          alt="Uploading preview"
-          className="size-20 rounded-2xl border border-border object-cover"
-        />
+        <div className="polaroid relative shrink-0">
+          <span className="tape" aria-hidden />
+          <img
+            src={previewUrl}
+            alt="Uploading preview"
+            className="size-18 object-cover"
+          />
+        </div>
         <div className="min-w-0 flex-1 space-y-3">
-          <p className="text-sm font-semibold">Uploading… {percent}%</p>
-          <div className="h-2 overflow-hidden rounded-full bg-secondary">
+          <p className="label-caps text-ink">Developing… {percent}%</p>
+          <div className="h-3 overflow-hidden rounded-full border-2 border-ink bg-paper">
             <div
-              className="h-full rounded-full bg-gradient-to-r from-primary to-[var(--accent-2)] transition-[width] duration-150 ease-out"
+              className="stripe-fill h-full"
               style={{ width: `${Math.max(4, percent)}%` }}
             />
           </div>
@@ -298,48 +301,53 @@ function ResultCard({
   const fraction = Math.min(1, remaining / (result.ttlSeconds * 1000))
 
   return (
-    <div className="space-y-4 animate-in fade-in zoom-in-95 duration-300">
-      <div className="overflow-hidden rounded-3xl border border-border bg-card/70 backdrop-blur">
-        <div className="flex items-center gap-4 border-b border-border/70 p-5">
-          <img
-            src={previewUrl}
-            alt="Uploaded preview"
-            className="size-16 rounded-xl border border-border object-cover"
-          />
+    <div className="space-y-5">
+      <div className="plate print-out overflow-visible">
+        <div className="flex items-center gap-5 p-5 pb-6">
+          <div className="polaroid relative shrink-0">
+            <span className="tape" aria-hidden />
+            <img
+              src={previewUrl}
+              alt="Uploaded preview"
+              className={cn('size-18 object-cover', expired && 'opacity-40 grayscale')}
+            />
+            {expired && (
+              <span className="rubber-stamp stamp-in absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[10px]">
+                Expired
+              </span>
+            )}
+          </div>
           <div className="min-w-0 flex-1">
-            <p className="flex items-center gap-2 text-sm font-semibold">
+            <p className="label-caps flex items-center gap-2 text-ink">
               {expired ? (
                 <>
-                  <AlertTriangle className="size-4 text-destructive" /> Link expired
+                  <AlertTriangle className="size-4 text-stamp" /> Link expired
                 </>
               ) : (
                 <>
-                  <span className="relative flex size-2.5">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
-                    <span className="relative inline-flex size-2.5 rounded-full bg-emerald-400" />
-                  </span>
+                  <span className="size-2.5 rounded-full border border-ink bg-seal" />
                   Your link is live
                 </>
               )}
             </p>
-            <p className="mt-1 text-xs text-muted-foreground">
+            <p className="mt-1.5 text-xs text-muted-foreground">
               {expired
-                ? 'The image has been deleted from our servers.'
+                ? 'The image has been shredded. Gone for good.'
                 : `Self-destructs in ${formatDuration(remaining)}`}
             </p>
           </div>
           <CountdownRing fraction={expired ? 0 : fraction} label={formatShort(remaining)} />
         </div>
 
-        <div className="p-5">
+        <div className="tear-line p-5">
           <div
             className={cn(
-              'flex items-center gap-2 rounded-2xl border border-border bg-background/60 p-2 pl-4 transition-opacity',
+              'flex items-center gap-2 rounded-lg border-2 border-ink bg-paper p-1.5 pl-4 transition-opacity',
               expired && 'opacity-40',
             )}
           >
             <Link2 className="size-4 shrink-0 text-muted-foreground" />
-            <span className="min-w-0 flex-1 truncate font-mono text-sm" title={result.url}>
+            <span className="min-w-0 flex-1 truncate text-sm" title={result.url}>
               {result.url}
             </span>
             <CopyButton value={result.url} disabled={expired} />
@@ -347,7 +355,7 @@ function ResultCard({
         </div>
       </div>
 
-      <div className="flex flex-col items-center justify-between gap-3 sm:flex-row">
+      <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
         <Button variant="secondary" onClick={onReset}>
           <RotateCcw /> {expired ? 'Upload another' : 'New upload'}
         </Button>
@@ -383,7 +391,10 @@ function CopyButton({ value, disabled }: { value: string; disabled?: boolean }) 
     <Button
       onClick={copy}
       disabled={disabled}
-      className={cn('min-w-28 transition-colors', copied && 'bg-emerald-500 text-white')}
+      className={cn(
+        'min-w-28',
+        copied && 'bg-seal shadow-[3px_3px_0_var(--ink)] hover:shadow-[4px_4px_0_var(--ink)]',
+      )}
     >
       {copied ? (
         <span className="flex items-center gap-2 animate-in zoom-in-75 duration-200">
@@ -391,7 +402,7 @@ function CopyButton({ value, disabled }: { value: string; disabled?: boolean }) 
         </span>
       ) : (
         <span className="flex items-center gap-2">
-          <Copy /> Copy link
+          <Copy /> Copy
         </span>
       )}
     </Button>
@@ -409,8 +420,10 @@ function CountdownRing({ fraction, label }: { fraction: number; label: string })
           cy="24"
           r={radius}
           fill="none"
-          strokeWidth="4"
-          className="stroke-secondary"
+          strokeWidth="3"
+          strokeDasharray="2.5 5"
+          strokeLinecap="round"
+          className="stroke-ink/25"
         />
         <circle
           cx="24"
@@ -419,12 +432,12 @@ function CountdownRing({ fraction, label }: { fraction: number; label: string })
           fill="none"
           strokeWidth="4"
           strokeLinecap="round"
-          className="stroke-primary transition-[stroke-dashoffset] duration-1000 ease-linear"
+          className="stroke-stamp transition-[stroke-dashoffset] duration-1000 ease-linear"
           strokeDasharray={circumference}
           strokeDashoffset={circumference * (1 - fraction)}
         />
       </svg>
-      <span className="absolute font-mono text-[10px] font-bold tabular-nums">{label}</span>
+      <span className="absolute text-[10px] font-bold tabular-nums text-stamp">{label}</span>
     </div>
   )
 }

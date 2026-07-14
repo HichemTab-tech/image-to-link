@@ -10,14 +10,10 @@ export function StarButton() {
       href={REPO_URL}
       target="_blank"
       rel="noreferrer"
-      className="star-button group relative inline-flex h-10 items-center gap-2.5 overflow-hidden rounded-xl border border-border bg-secondary/60 px-5 text-sm font-semibold text-foreground no-underline transition-all duration-200 hover:border-amber-400/60 hover:bg-secondary active:scale-[0.98]"
+      className="star-sticker inline-flex h-10 items-center gap-2.5 rounded-full border-2 border-stamp bg-paper-bright px-5 text-xs font-bold uppercase tracking-widest text-stamp no-underline shadow-[2px_3px_0_rgba(38,33,26,0.3)]"
     >
-      <span className="star-button-shine" aria-hidden />
-      <span className="relative grid place-items-center">
-        <Star className="size-4 text-amber-400 transition-transform duration-300 group-hover:rotate-[72deg] group-hover:scale-125 group-hover:fill-amber-400" />
-        <span className="star-sparkle" aria-hidden />
-      </span>
-      <span className="relative">Enjoying it? Star on GitHub</span>
+      <Star className="star-icon size-4 fill-stamp" />
+      <span>Enjoying it? Star it on GitHub</span>
     </a>
   )
 }
