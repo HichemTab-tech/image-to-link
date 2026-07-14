@@ -4,6 +4,7 @@ import {SiteHeader} from '#/components/SiteHeader'
 import {getSiteOrigin} from '#/lib/site-origin'
 
 import appCss from '../styles.css?url'
+import appCssInline from '../styles.css?inline'
 import type {ReactNode} from "react";
 
 const SITE_NAME = 'image→link'
@@ -45,11 +46,14 @@ export const Route = createRootRoute({
                 {name: 'twitter:image:alt', content: OG_IMAGE_ALT},
             ],
             links: [
-                {rel: 'stylesheet', href: appCss},
+                // In production the CSS is inlined below to avoid a
+                // render-blocking request; in dev keep the link for HMR.
+                ...(import.meta.env.PROD ? [] : [{rel: 'stylesheet', href: appCss}]),
                 {rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml'},
                 {rel: 'manifest', href: '/manifest.json'},
                 {rel: 'canonical', href: url},
             ],
+            styles: import.meta.env.PROD ? [{children: appCssInline}] : [],
             scripts: [
                 {
                     type: 'application/ld+json',
