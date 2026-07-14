@@ -9,7 +9,8 @@
   --paper: #f2e9d8;
   --paper-bright: #fdf8ec;
   --ink: #26211a;
-  --ink-soft: #756b58;
+  /* WCAG AA: >=4.5:1 on paper, paper-bright and secondary. */
+  --ink-soft: #5c5442;
   --stamp: #d6482f;
   --stamp-deep: #b53722;
   --seal: #1f6f66;

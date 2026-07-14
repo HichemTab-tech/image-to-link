@@ -235,7 +235,7 @@ function Dropzone({
                 </div>
             </button>
             {error && (
-                <p className="mt-4 flex items-center justify-center gap-2 text-sm font-bold text-stamp animate-in fade-in slide-in-from-top-1 duration-200">
+                <p className="mt-4 flex items-center justify-center gap-2 text-sm font-bold text-stamp-deep animate-in fade-in slide-in-from-top-1 duration-200">
                     <AlertTriangle className="size-4"/> {error}
                 </p>
             )}
@@ -456,7 +456,7 @@ function CountdownRing({fraction, label}: { fraction: number; label: string }) {
                     strokeDashoffset={circumference * (1 - fraction)}
                 />
             </svg>
-            <span className="absolute text-[10px] font-bold tabular-nums text-stamp">{label}</span>
+            <span className="absolute text-[10px] font-bold tabular-nums text-stamp-deep">{label}</span>
         </div>
     )
 }

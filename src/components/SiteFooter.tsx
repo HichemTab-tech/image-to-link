@@ -17,7 +17,7 @@ export function SiteFooter() {
                 />
                 <span className="text-xs text-muted-foreground">
           Made by{' '}
-                    <span className="font-bold text-ink transition-colors group-hover:text-stamp">
+                    <span className="font-bold text-ink transition-colors group-hover:text-stamp-deep">
             HichemTab-tech
           </span>
         </span>
